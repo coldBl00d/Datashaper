@@ -1,0 +1,38 @@
+<results> 
+	<counts>
+		<count> 
+			<table>EMPLOYEES</table>
+			<count>107</count>
+		</count>
+		<count>
+			<table>JOB_HISTORY</table>
+			<count>10</count>
+		</count>
+		<count>
+			<table>JOBS</table>
+			<count>19</count>
+		</count>
+	</counts>
+	<resultset id="1"> 
+		<result>
+			<size>1</size> <!-- number of record in batch, if 1 then looking at one record at a time -->
+			<count>5</count>
+			<intersecting>3</intersecting>
+		</result>
+		<result>
+			<size>1</size>
+			<count>4</count>
+			<intersecting>4</intersecting>
+		</result>
+		.
+		.
+		.
+	</resultset>
+	.
+	.
+	.
+	more result set 
+	.
+	.
+	.
+</results>

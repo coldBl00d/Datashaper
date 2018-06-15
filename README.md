@@ -87,7 +87,8 @@ for every result:
 Types of fk 
 
 Table to same table 
-table to intersection table 
+table to intersection table
+   table to table x 2  
 table to child table 
 
 

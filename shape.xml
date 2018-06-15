@@ -1,0 +1,22 @@
+<shapes>
+	<shape id="1"> 
+	 	<to> 
+		 	<table>EMPLOYEES</table>
+		 	<link>EMPLOYEE_ID</link>
+	 	</to>
+	 	<from>
+		 	<table>JOB_HISTORY</table>
+		 	<link>EMPLOYEE_ID</link>
+		</from>
+ 	</shape>
+ 	<shape id="2"> 
+ 		<from>
+ 			<table>JOB_HISTORY</table>
+		 	<link>JOB_ID</link>
+ 		</from>
+ 		<to>
+ 			<table>JOBS</table>
+ 			<link>JOB_ID</link>
+ 		</to>
+ 	</shape>
+</shapes>
