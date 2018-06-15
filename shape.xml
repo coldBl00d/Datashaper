@@ -1,22 +1,20 @@
 <shapes>
 	<shape id="1"> 
-	 	<to> 
-		 	<table>EMPLOYEES</table>
-		 	<link>EMPLOYEE_ID</link>
-	 	</to>
-	 	<from>
-		 	<table>JOB_HISTORY</table>
-		 	<link>EMPLOYEE_ID</link>
-		</from>
+	 	<table direction="to"> <!-- parent -->
+		 	<name>EMPLOYEES</name>
+	 	</table>
+	 	<table direction="from"> <!--  child  -->
+		 	<name>JOB_HISTORY</name>
+		 	<link>EMPLOYEE_ID</link> <!-- if no <pk> then dont look in the backward direction ie child is unique -->
+		</table>
  	</shape>
  	<shape id="2"> 
- 		<from>
+ 		<table direction="from">
  			<table>JOB_HISTORY</table>
-		 	<link>JOB_ID</link>
- 		</from>
- 		<to>
+		 	<link>JOB_ID</link> <!--  group by fk to get num of child for a parent -->
+ 		</table>
+ 		<table direction="to">
  			<table>JOBS</table>
- 			<link>JOB_ID</link>
- 		</to>
+ 		</table>
  	</shape>
 </shapes>
