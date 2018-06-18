@@ -11,11 +11,13 @@ public class DbConnector {
 	public static final int CONNECTION_FAILURE = -1; 
 	public static final int DRIVER_LOAD_FAILURE = -2; 
 	private Connection mConnection = null; 
+	private static final String DEFAULT_CONNECTION="jdbc:oracle:thin:@localhost:1521/xe";
 	
 	public int init(String dbString) {
 		try {
 			Driver driver= new oracle.jdbc.driver.OracleDriver();
 			DriverManager.registerDriver(driver);
+			if(dbString == null ) dbString = DEFAULT_CONNECTION;
 			this.mConnection=DriverManager.getConnection(dbString,"hr","hr");
 		}catch(SQLException e) {
 			System.err.println("ERROR: DB Connection failed");

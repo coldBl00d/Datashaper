@@ -39,5 +39,11 @@ public class AnalyzerTest {
 		assertEquals(query,"SELECT p.rowid, c.rowid from Employees p, Job_history c WHERE p.EMPLOYEE_ID=c.Employee_id" );
 		
 	}
+	
+	@Test 
+	public void testProcess() {
+		Analyser analyser = new Analyser();
+		analyser.process(this.generateTestShape());
+	}
 
 }
