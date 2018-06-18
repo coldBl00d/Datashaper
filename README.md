@@ -99,3 +99,70 @@ table to child table
 features: 
    column density of fk columns 
    average child number, show oddities
+   
+   
+```xml 
+
+Now generates some kind of analytic information on a fk
+
+AAAEAbAAEAAAADNAAB--> |AAAEAfAAEAAAADlAAB|AAAEAfAAEAAAADlAAC
+AAAEAbAAEAAAADOAAD--> |AAAEAfAAEAAAADlAAD
+AAAEAbAAEAAAADNAAC--> |AAAEAfAAEAAAADlAAA
+AAAEAbAAEAAAADOAAC--> |AAAEAfAAEAAAADlAAG|AAAEAfAAEAAAADlAAJ
+AAAEAbAAEAAAADNAAW--> |AAAEAfAAEAAAADlAAF
+AAAEAbAAEAAAADNABM--> |AAAEAfAAEAAAADlAAH|AAAEAfAAEAAAADlAAI
+AAAEAbAAEAAAADNAAO--> |AAAEAfAAEAAAADlAAE
+
+-->-->-->-->-->-->--
+Child --> Parent
+AAAEAfAAEAAAADlAAF--> |AAAEAbAAEAAAADNAAW
+AAAEAfAAEAAAADlAAG--> |AAAEAbAAEAAAADOAAC
+AAAEAfAAEAAAADlAAD--> |AAAEAbAAEAAAADOAAD
+AAAEAfAAEAAAADlAAE--> |AAAEAbAAEAAAADNAAO
+AAAEAfAAEAAAADlAAJ--> |AAAEAbAAEAAAADOAAC
+AAAEAfAAEAAAADlAAH--> |AAAEAbAAEAAAADNABM
+AAAEAfAAEAAAADlAAI--> |AAAEAbAAEAAAADNABM
+AAAEAfAAEAAAADlAAB--> |AAAEAbAAEAAAADNAAB
+AAAEAfAAEAAAADlAAC--> |AAAEAbAAEAAAADNAAB
+AAAEAfAAEAAAADlAAA--> |AAAEAbAAEAAAADNAAC
+
+
+<Results>
+	<Result id=" AAAEAbAAEAAAADNAAB" table="Employees" >
+		<count>2</count>
+		<unique>2</unqiue>
+		<shared>0</shared>
+	</Result>
+	<Result id=" AAAEAbAAEAAAADOAAD" table="Employees" >
+		<count>1</count>
+		<unique>1</unqiue>
+		<shared>0</shared>
+	</Result>
+	<Result id=" AAAEAbAAEAAAADNAAC" table="Employees" >
+		<count>1</count>
+		<unique>1</unqiue>
+		<shared>0</shared>
+	</Result>
+	<Result id=" AAAEAbAAEAAAADOAAC" table="Employees" >
+		<count>2</count>
+		<unique>2</unqiue>
+		<shared>0</shared>
+	</Result>
+	<Result id=" AAAEAbAAEAAAADNAAW" table="Employees" >
+		<count>1</count>
+		<unique>1</unqiue>
+		<shared>0</shared>
+	</Result>
+	<Result id=" AAAEAbAAEAAAADNABM" table="Employees" >
+		<count>2</count>
+		<unique>2</unqiue>
+		<shared>0</shared>
+	</Result>
+	<Result id=" AAAEAbAAEAAAADNAAO" table="Employees" >
+		<count>1</count>
+		<unique>1</unqiue>
+		<shared>0</shared>
+	</Result>
+</Results>
+
+```

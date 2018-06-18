@@ -2,11 +2,11 @@ package com.ds.enities;
 
 public class Result implements Entity {
 	
-	Table table; 
-	String identifier; 
-	int childCount; 
-	int sharedCount; 
-	int uniqueCount; 
+	private Table table; 
+	private String identifier; 
+	private int childCount; 
+	private int sharedCount; 
+	private int uniqueCount; 
 	
 	public Result() {
 		this.childCount=0;
@@ -39,6 +39,7 @@ public class Result implements Entity {
 	
 	public Result shares(int count) {
 		this.sharedCount=count;
+		this.uniqueCount=this.childCount-this.sharedCount;
 		return this;
 	}
 	
@@ -63,5 +64,49 @@ public class Result implements Entity {
 				+" with " + this.sharedCount + " shared childs and "
 				+ this.uniqueCount + " unique childs.";
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		if(obj instanceof Result) {
+			Result result = (Result)obj;
+			if(this.identifier.equals(result.identifier) && this.table.equals(result.getTable())) {
+				return true;
+			}
+		}
+		return false;
+		
+	}
+
+	@Override
+	public int hashCode() {
+		long code = 17;
+		code = 37*code+this.getTable().getTable().hashCode();
+		code = 37*code+this.getIdentifier().hashCode();
+		return  (int) code;
+	}
+
+	public Table getTable() {
+		return table;
+	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public int getChildCount() {
+		return childCount;
+	}
+
+	public int getSharedCount() {
+		return sharedCount;
+	}
+
+	public int getUniqueCount() {
+		return uniqueCount;
+	}
+	
+	
+		
 
 }

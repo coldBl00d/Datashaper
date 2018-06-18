@@ -6,10 +6,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.ds.connection.DbConnector;
+import com.ds.enities.Result;
 import com.ds.enities.Shape;
 import com.ds.enities.Table;
 
@@ -37,9 +40,11 @@ public class Analyser {
 		//Map <String, List<String>> cpMap = makeMap(childParentRs, "crid", "prid");
 		//System.out.println();
 		//printMap(cpMap);
-		List<Map<String, List<String>>> mapList = makeMaps(childParentRs);
+		List<HashMap<String, List<String>>> mapList = makeMaps(childParentRs);
+		System.out.println("Parents --> Childs ");
 		printMap(mapList.get(0));//parent to child
 		System.out.println("-->-->-->-->-->-->--");
+		System.out.println("Child --> Parent");
 		printMap(mapList.get(1));//child to parent
 		try {
 			childParentRs.close();
@@ -47,19 +52,84 @@ public class Analyser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		//makeResults(map, map); 
+		HashMap<String, Result> results=null;
+		try {
+			results = makeResult(mapList, shape);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		this.printResultMap(results);
 		//findCounts()
 		//closeConnection()
 		//writeResult()
 		//done
 	}
 	
+	private HashMap<String,Result> makeResult(List<HashMap<String, List<String>>> doubleMap, Shape shape) throws Exception{
+		HashMap<String,Result> resultMap = new HashMap<String,Result>();
+		HashMap<String, List<String>> pcMap =  (HashMap<String, List<String>>) doubleMap.get(0);
+		HashMap<String, List<String>> cpMap =  (HashMap<String, List<String>>) doubleMap.get(1);
+		
+		for (String parentKey : pcMap.keySet()) {
+			int count = pcMap.get(parentKey).size();
+			Result result = Result.getInstance().identifiesAs(parentKey)
+					                            .ofTable(shape.getToTable())
+					                            .setChildCount(count)
+					                            .shares(0);
+			
+			resultMap.put(parentKey,result);
+		}
+		
+		pcMap.clear();
+		
+		for(String childKey : cpMap.keySet()) {
+			
+			List<String> pList = cpMap.get(childKey);
+			if(pList.size()>1) {
+				for(String parent : pList) {
+					Result result = resultMap.get(parent);
+					if(result==null) {
+						throw new Exception("Result for a parent in the child map was not created");
+					}else {
+						result.foundShared();
+					}
+				}	
+			}
+			
+			
+		}
+		return resultMap;
+	}
 	
-	private List<Map<String, List<String>>> makeMaps(ResultSet rs){
-		Map <String, List<String>> cpMap = new HashMap<String, List<String>> ();
-		Map <String, List<String>> pcMap = new HashMap<String, List<String>> ();
+	private void printResultMap(HashMap<String, Result> map) {
+		System.out.print("<Results>");
+		System.out.println();
+		for (Map.Entry<String, Result> entry : map.entrySet()) {
+			System.out.print("\t<Result id=\" "+ entry.getValue().getIdentifier()+
+					"\""
+					+ " table=\""
+					+ entry.getValue().getTable().getTable() 
+					+"\" >");
+			System.out.println();
+			System.out.print("\t\t"+
+			"<count>" + entry.getValue().getChildCount() + "</count>");
+			System.out.println();
+			System.out.print("\t\t"+
+			"<unique>"+entry.getValue().getUniqueCount()+"</unqiue>");
+			System.out.println();
+			System.out.print("\t\t"+
+					"<shared>"+entry.getValue().getSharedCount()+"</shared>");
+			System.out.println();
+			System.out.print("\t</Result>");
+			System.out.println();
+		}
+		System.out.println("</Results>");
+	}
+	
+	private List<HashMap<String, List<String>>> makeMaps(ResultSet rs){
+		HashMap <String, List<String>> cpMap = new HashMap<String, List<String>> ();
+		HashMap <String, List<String>> pcMap = new HashMap<String, List<String>> ();
 		assert rs!=null;
 		List<String> cTempList; //parents
 		List<String> pTempList;
@@ -85,7 +155,7 @@ public class Analyser {
 				}
 			}
 			
-			List<Map<String, List<String>>> rList = new ArrayList<Map<String, List<String>>>();
+			List<HashMap<String, List<String>>> rList = new ArrayList<HashMap<String, List<String>>>();
 			rList.add(pcMap);
 			rList.add(cpMap);
 			return rList;

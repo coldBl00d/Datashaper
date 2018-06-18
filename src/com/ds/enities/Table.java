@@ -54,6 +54,15 @@ public class Table implements Entity {
 				"\n Table Direction "+ this.direction+
 				"\n Table Link Name "+ this.getLink().getLinkName();
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Table) {
+			return this.getTable().equals(((Table)obj).getTable());
+		}
+		return false;
+		
+	}
 	
 	
 }
