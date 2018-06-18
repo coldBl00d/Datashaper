@@ -36,7 +36,7 @@ public class AnalyzerTest {
 		Analyser analyser = new Analyser();
 		String query=analyser.makeQuery(this.generateTestShape().getFromTable(), this.generateTestShape().getToTable());
 		System.out.println(query);
-		assertEquals(query,"SELECT p.rowid, c.rowid from Employees p, Job_history c WHERE p.EMPLOYEE_ID=c.Employee_id" );
+		assertEquals(query,"SELECT p.rowid AS prid, c.rowid AS crid from Employees p, Job_history c WHERE p.EMPLOYEE_ID=c.Employee_id" );
 		
 	}
 	

@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.ds.connection.DbConnector;
 import com.ds.enities.Shape;
@@ -28,7 +31,54 @@ public class Analyser {
 		assert fromTable!=null && toTable!=null;
 		String query = makeQuery(fromTable, toTable);
 		ResultSet childParentRs = this.fireQuery(query);
-		printResultSet(childParentRs);
+		//printResultSet(childParentRs);
+		Map <String, List<String>> pcMap = makeParentChildMap(childParentRs);
+		printMap(pcMap);
+		//makeChildParentMap(childParntRs) 
+		//makeResults(map, map); 
+		//findCounts()
+		//closeConnection()
+		//writeResult()
+		//done
+	}
+	
+	private Map <String, List<String>> makeParentChildMap(ResultSet rs){
+		Map <String, List<String>> pcMap = new HashMap<String, List<String>> ();
+		assert rs!=null;
+		List tempList; 
+		try {
+			while(rs.next()) {
+				List<String> childList = pcMap.get(rs.getString("prid"));
+				if(childList == null) {
+					tempList = new ArrayList<String>();
+					tempList.add(rs.getString("crid"));
+				    pcMap.put(rs.getString("prid"), tempList);
+				}else {
+					childList.add(rs.getString("crid"));
+				}
+			}
+			
+			return pcMap;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private void printMap(Map<String, List<String>> map) {
+		for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+			System.out.print(entry.getKey());
+			System.out.print("--> ");
+			printList(entry.getValue());
+			System.out.println();
+		}
+	}
+	
+	private void printList(List<String> list) {
+		for(String s : list) {
+			System.out.print("|"+s);
+		}
 	}
 	
 	private void printResultSet(ResultSet childParentRs) {
