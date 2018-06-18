@@ -59,18 +59,22 @@ output:
 
 algorithm : 
 
-for record in the drving table: 
-    find number of child record in child table 
-    write the child rowid into xml 
+find total number of parent, write to xml 
+find total number of child, write to xml 
+for record in the parent table: 
+    find its child records 
+    get number of child for a parent record from the result set.
+    Make an XML entity object with parent record id, count of child
+    make a map of parent pk --> meta object   
     make a map of child --> parent 
 
 for every child in the map:
 	if(number_of_parents(child)> 1 ) 
     	for every parent that it is associated to child 
-        	parent.count - 1 
+        	parent.unique - 1 
 
-for every parent 
-	write the unique count 
+for every parent metaobject 
+	write metaboject
 
 
 
