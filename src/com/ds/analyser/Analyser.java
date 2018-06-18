@@ -32,9 +32,23 @@ public class Analyser {
 		String query = makeQuery(fromTable, toTable);
 		ResultSet childParentRs = this.fireQuery(query);
 		//printResultSet(childParentRs);
-		Map <String, List<String>> pcMap = makeParentChildMap(childParentRs);
-		printMap(pcMap);
-		//makeChildParentMap(childParntRs) 
+		//Map <String, List<String>> pcMap = makeMap(childParentRs, "prid","crid");
+		//printMap(pcMap);
+		//Map <String, List<String>> cpMap = makeMap(childParentRs, "crid", "prid");
+		//System.out.println();
+		//printMap(cpMap);
+		List<Map<String, List<String>>> mapList = makeMaps(childParentRs);
+		printMap(mapList.get(0));//parent to child
+		System.out.println("-->-->-->-->-->-->--");
+		printMap(mapList.get(1));//child to parent
+		try {
+			childParentRs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		//makeResults(map, map); 
 		//findCounts()
 		//closeConnection()
@@ -42,29 +56,48 @@ public class Analyser {
 		//done
 	}
 	
-	private Map <String, List<String>> makeParentChildMap(ResultSet rs){
+	
+	private List<Map<String, List<String>>> makeMaps(ResultSet rs){
+		Map <String, List<String>> cpMap = new HashMap<String, List<String>> ();
 		Map <String, List<String>> pcMap = new HashMap<String, List<String>> ();
 		assert rs!=null;
-		List tempList; 
+		List<String> cTempList; //parents
+		List<String> pTempList;
+		
 		try {
 			while(rs.next()) {
-				List<String> childList = pcMap.get(rs.getString("prid"));
-				if(childList == null) {
-					tempList = new ArrayList<String>();
-					tempList.add(rs.getString("crid"));
-				    pcMap.put(rs.getString("prid"), tempList);
+				List<String> parentValueList = cpMap.get(rs.getString("crid"));
+				List<String> childValueList = pcMap.get(rs.getString("prid"));
+				if(parentValueList == null) {
+					pTempList = new ArrayList<String>();
+					pTempList.add(rs.getString("prid"));
+				    cpMap.put(rs.getString("crid"), pTempList);
 				}else {
-					childList.add(rs.getString("crid"));
+					parentValueList.add(rs.getString("prid"));
+				}
+				
+				if(childValueList == null) {
+					cTempList = new ArrayList<String>();
+					cTempList.add(rs.getString("crid"));
+				    pcMap.put(rs.getString("prid"), cTempList);
+				}else {
+					childValueList.add(rs.getString("crid"));
 				}
 			}
 			
-			return pcMap;
+			List<Map<String, List<String>>> rList = new ArrayList<Map<String, List<String>>>();
+			rList.add(pcMap);
+			rList.add(cpMap);
+			return rList;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
 		}
+		
 	}
+	
+	
 	
 	private void printMap(Map<String, List<String>> map) {
 		for (Map.Entry<String, List<String>> entry : map.entrySet()) {
