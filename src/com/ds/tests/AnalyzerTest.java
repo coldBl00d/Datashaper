@@ -12,18 +12,18 @@ import com.ds.enities.Table;
 
 public class AnalyzerTest {
 	
-	public Table generateTestTable(String tableName, String direction) {
-		return new Table(tableName, direction);
+	public Table generateTestTable(String tableName, String direction, String pk) {
+		return new Table(tableName, direction, pk);
 	}
 	
-	public Link generateTestLink(Table source, Table target, String linkName) {
-		return new  Link(linkName, source, target);
+	public Link generateTestLink(Table source, Table target, String linkName, String sourceTableField) {
+		return new  Link(linkName, source, target, sourceTableField);
 	}
 	
 	public Shape generateTestShape() {
-		Table empTable= this.generateTestTable("Employees", "to");
-		Table jobHistoryTable = this.generateTestTable("Job_history", "from");
-		Link jobHistoryToEmpLink = this.generateTestLink(empTable, jobHistoryTable, "Employee_id");
+		Table empTable= this.generateTestTable("Employees", "to", "EMPLOYEE_ID");
+		Table jobHistoryTable = this.generateTestTable("Job_history", "from", "NO_PK");
+		Link jobHistoryToEmpLink = this.generateTestLink(empTable, jobHistoryTable, "Employee_id", empTable.getPk());
 		jobHistoryTable.setLink(jobHistoryToEmpLink);
 		System.out.println(empTable);
 		System.out.println(jobHistoryTable);
@@ -36,7 +36,7 @@ public class AnalyzerTest {
 		Analyser analyser = new Analyser();
 		String query=analyser.makeQuery(this.generateTestShape().getFromTable(), this.generateTestShape().getToTable());
 		System.out.println(query);
-		assertEquals(query,"SELECT count(1), Employee_id FROM Job_history group by Employee_id" );
+		assertEquals(query,"SELECT p.rowid, c.rowid from Employees p, Job_history c WHERE p.EMPLOYEE_ID=c.Employee_id" );
 		
 	}
 

@@ -8,6 +8,7 @@ import com.ds.enities.Table;
 public class Analyser {
 	
 	private final String CHILD_COUNT="SELECT count(1), :fktoparent: FROM :childTable: group by :fktoparent:";
+	private final String PARENT_CHILD="SELECT p.rowid, c.rowid from :parentTable: p, :childTable: c WHERE p.:parentPrimaryKey:=c.:childForeignKey:";
 	
 	public void process(ArrayList<Shape> shapes) {
 		for(Shape cShape : shapes) {
@@ -24,11 +25,11 @@ public class Analyser {
 	}
 	
 	public String makeQuery(Table fromTable, Table toTable) {
-		String query = new String(CHILD_COUNT); 
-		query=query.replace(":fktoparent:", fromTable.getLink().getLinkName());
-		System.out.println(query);
+		String query = new String(PARENT_CHILD); 
+		query=query.replace(":parentTable:", toTable.getTable());
 		query=query.replace(":childTable:", fromTable.getTable());
-		System.out.println(query);
+		query=query.replace(":parentPrimaryKey:", fromTable.getLink().getSourceTableField());
+		query=query.replaceAll(":childForeignKey:", fromTable.getLink().getLinkName());
 		return query;
 	}
 	

@@ -2,6 +2,7 @@
 	<shape id="1"> 
 	 	<table direction="to"> <!-- parent -->
 		 	<name>EMPLOYEES</name>
+		 	<pk>EMPLOYEE_ID</pk>
 	 	</table>
 	 	<table direction="from"> <!--  child  -->
 		 	<name>JOB_HISTORY</name>
